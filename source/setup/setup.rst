@@ -50,7 +50,7 @@ Wichtige Hinweise
 
 * Es wird also eine extern auflösbare, registrierte Domain genutzt und bei der Einrichtung des Servers wird eine eigene interne Subdomain als AD-Domäne angegeben.
 
-  Zum Beispiel ``linuxmuster.meineschule.de`` -> linuxmuster als Dubdomain zur Domain ``meineschule.de``.
+  Zum Beispiel ``linuxmuster.meineschule.de`` -> linuxmuster als Subdomain zur Domain ``meineschule.de``.
   
   Der erste Part ``linuxmuster`` wird in diesem Beispiel dann als SAMBA-Domäne verwendet.
   
