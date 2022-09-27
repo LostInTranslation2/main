@@ -348,7 +348,7 @@ Klicke nun unten auf die Drop-down Liste ``Copy from -> win10.image.reg``. Es wi
    :align: center
    :alt: Linbo Indicate Registry Patch
 
-5. Alternativ in der Server-Shell aus ``/srv/linbo/exmaples`` die richtige Vorlage in ``/srv/linbo`` kopieren. Die Datei trägt dann den Namen ``<imagename>.reg`` - also in o.g. Beispiel win10.reg.
+5. Alternativ in der Server-Shell aus ``/srv/linbo/examples`` die richtige Vorlage in ``/srv/linbo/images/<imagename>`` kopieren. Die Datei trägt dann den Namen ``<imagename>.reg`` - also in o.g. Beispiel win10.reg.
 
 6. In Zeile 22 musst Du noch Folgendes ergänzen:
 
