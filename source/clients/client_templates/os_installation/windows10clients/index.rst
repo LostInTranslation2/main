@@ -221,32 +221,34 @@ g) mit Enter bestätigen. Nun wurde die Datei übertragen.
 
 h) Putty schließen 
 
-2. auf dem PC im Programm ``Explorer`` nun das Netzlaufwerk des Servers öffnen, indem Du in der Leiste oben ``\\server`` eingibst:
+2. Die Datei ``\\srv\samba\global\management\global-admin\win10.global.reg`` editieren und im unteren Bereich unter ``samba domain, to be adapted`` den eigenen Domainnamen für die drei Schlüssel eingeben.
+
+3. auf dem PC im Programm ``Explorer`` nun das Netzlaufwerk des Servers öffnen, indem Du in der Leiste oben ``\\server`` eingibst:
 
 .. figure:: media/39_windows-10-clients_open-net-resource.png
    :align: center
    :alt: Win10 Open Network Resource
 
-3. Du gibst ggf. die Anmeldedaten des ``global-admin`` ein. Danach öffnest Du nacheinander die Ordner ``linuxmuster-global → managament → global-admin``
+4. Du gibst ggf. die Anmeldedaten des ``global-admin`` ein. Danach öffnest Du nacheinander die Ordner ``linuxmuster-global → managament → global-admin``
 
-4. Hier liegt die Registry-Datei ``win10.global``. Ziehe diese via Drag & Drop auf den Desktop.
+5. Hier liegt die Registry-Datei ``win10.global``. Ziehe diese via Drag & Drop auf den Desktop.
 
 .. figure:: media/40_windows-10-clients_copy-global-reg.png
    :align: center
    :alt: Win10 Copy Global Registry File
 
-5. Führen nun einen Doppelklick auf die Datei win10.global.reg aus. Lasse Änderungen durch diese App zu.
+6. Führen nun einen Doppelklick auf die Datei win10.global.reg aus. Lasse Änderungen durch diese App zu.
 
-6. Evtl. weitere gewünschte System-Einrichtungen für die Vorlage vornehmen.
+7. Evtl. weitere gewünschte System-Einrichtungen für die Vorlage vornehmen.
 
-7. Zum Herunterfahren vorsichtshalber über das Windows-Startmenü in der Suche ``cmd`` eingeben und die
+8. Zum Herunterfahren vorsichtshalber über das Windows-Startmenü in der Suche ``cmd`` eingeben und die
    Eingabeaufforderung öffnen.
 
 .. figure:: media/41_windows-10-clients_open-terminal.png
    :align: center
    :alt: Win10 Open Terminal
 
-8. In der Console ``shutdown -s -t 1`` eingeben und mit ``Enter`` bestätigen:
+9. In der Console ``shutdown -s -t 1`` eingeben und mit ``Enter`` bestätigen:
 
 .. figure:: media/42_windows-10-clients_shutdown-windows-device.png
    :align: center
