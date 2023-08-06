@@ -83,7 +83,7 @@ Importiere zuerst die Schlüsseldatei:
 
 .. code::
 
-   sudo wget -qO- "https://deb.linuxmuster.net/pub.gpg" | gpg --dearmour -o /usr/share/keyrings/linuxmuster.net.gpg
+   sudo wget -qO- "https://deb.linuxmuster.net/pub.gpg" | sudo gpg --dearmour -o /usr/share/keyrings/linuxmuster.net.gpg
 
 Füge danach das Linuxmuster 7.2 Testing-Repro hinzu:
 
