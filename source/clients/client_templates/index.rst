@@ -31,7 +31,7 @@ Mittels der Hardwareklasse teilst Du LINBO mit, welche Konfiguration für die Ge
 
 Bei der Rechneraufnahme legst Du fest, welche Konfigurationen für jede einzelne Arbeitsstation gelten sollen. Das sind:
 
-  * Raum in dem sich der Rechner befindet
+  * Raum, in dem sich der Rechner befindet.
   * Name des Rechners
   * Name der Hardwareklasse, welcher der Rechner angehören soll.
   * MAC-Adresse des Rechners
@@ -58,3 +58,17 @@ Im letzten Schritt wird nun das eigentliche Betriebssystem auf dem Muster-Client
    hardware_registration/index
    os_installation/index
 
+.. hint::
+   Damit Clients in die Domäne aufgenommen werden können muss auf dem Server vorher die Standard-GPO erzeugt werden. Dies ist auch notwendig, wenn ausschließlich Linux-Clients eingesetzt werden.
+
+Die Standard-GPO wird auf dem Server erzeugt durch:
+
+.. code:: 
+
+  # sophomorix-school --gpo-create default-school
+  
+Anschließend den Samba-Dienst noch neu starten:
+
+.. code:: 
+
+  # systemctl restart samba-ad-dc.service

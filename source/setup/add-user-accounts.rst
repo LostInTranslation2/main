@@ -8,9 +8,13 @@
                    `@cweikl <https://ask.linuxmuster.net/u/cweikl>`_
 		   
 
-In einer Schule müssen meist mehrere hundert bis einige tausend Schüler als Benutzer angelegt werden. Die Schulkonsole (WebUI) erlaubt das Einlesen aller Schülerdaten aus einer Text-Datei, die z.B. aus dem Schulverwaltungsprogramm der Schule bezogen wurde. Anschließend werden Konten aller Schüler dieser Liste, die im System noch nicht vorhanden sind, angelegt, solche mit einer neuen Klasse versetzt und Konten nicht mehr aufgeführter Schüler schrittweise aus dem System entfernt.
+In einer Schule müssen meist mehrere hundert bis einige tausend Schüler als Benutzer angelegt werden. Die Schulkonsole (WebUI) erlaubt das Einlesen aller Schülerdaten aus einer Text-Datei, die z.B. aus dem Schulverwaltungsprogramm der Schule bezogen wurde. Anschließend werden 
 
-In diesen Abschnitten wird beispielhaft ein Lehrer händisch angelegt und per Datei-Import einige Schüler aufgenommen. Melde Dich dafür an der Schulkonsole als ``global-admin`` an.
+- Konten aller Schüler dieser Liste, die im System noch nicht vorhanden sind, angelegt, 
+- solche mit einer neuen Klasse versetzt und 
+- Konten nicht mehr aufgeführter Schüler schrittweise aus dem System entfernt.
+
+In diesen Abschnitten wird beispielhaft ``ein Lehrer händisch`` angelegt und per Datei-Import einige Schüler aufgenommen. Melde Dich dafür an der Schulkonsole als ``global-admin`` an.
 
 
 Zeichenkodierung wählen
@@ -36,9 +40,9 @@ Schließe die Eingabe mit "Speichern" ab.
 
 Für den Listenimport gibt es drei verschiedene CSV-Dateien:
 
-1. students.csv: Liste für den Schülerimport
-2. teachers.csv: Liste für den Lehrerimport
-3. extrastudents.csv: Liste für den Import von Benutzern für z.B. Fortbildungen, Kurse etc.
+1. ``students.csv``: Liste für den Schülerimport
+2. ``teachers.csv``: Liste für den Lehrerimport
+3. ``extrastudents.csv``: Liste für den Import von Benutzern für z.B. Fortbildungen, Kurse etc.
 
 Diese CSV-Dateien folgen nachstehendem Aufbau:
 
@@ -46,7 +50,8 @@ Diese CSV-Dateien folgen nachstehendem Aufbau:
 
   Klasse;Nachname;Vornamen;Geburtsdatum;ID
 
-Trennzeichen ist das Semikolon (;). Klasse ist nur für Schüler anzugeben. Die ID kann nachgestellt sein und stammt i.d.R. aus den Schulverwaltungsprogrammen. Auf diese Weise wird sichergestellt, dass für identische Benutzer immer nur ein Zugang angelegt wird.
+Trennzeichen ist das Semikolon (;). Klasse ist nur für Schüler anzugeben. 
+Die ID kann nachgestellt sein und stammt i.d.R. aus den Schulverwaltungsprogrammen. Auf diese Weise wird sichergestellt, dass für identische Benutzer immer nur ein Zugang angelegt wird.
 
 Lehrer importieren
 ==================
@@ -70,9 +75,12 @@ Klicke auf den Button ``+ Lehrer hinzufügen``. Es wird eine leere Zeile hinzuge
 
 .. hint::
 
-   Wie dargestellt führt der Benutzername bo.hans zu einem Importfehler ! Im Benutzernamen darf kein Punkt enthalten sein. VornameNachname oder nur Nachname wären hingegen zulässige Benutzernamen.
+   Wie dargestellt führt der ``Benutzername bo.hans zu einem Importfehler`` ! Im Benutzernamen darf kein Punkt enthalten sein. ``vornamenachname`` oder nur ``nachname`` wären hingegen zulässige Benutzernamen.
+   
+.. attention::
 
-
+   Der angegebene Benutzername darf keine Leerzeichen, Punkte und Großbuchstaben enthalten. Anderfalls kommt es bei ``Speichern & Prüfen`` zu einer Fehlermeldung
+   
 Mit ``+ Lehrer hinzufügen`` können auf diese Art und Weise weitere Lehrer einzeln aufgenommen werden. Klicke nach dem Eintragen aller der Daten unten auf den Button ``Speichern & Prüfen``.
 
 Es erscheint ein Fenster, in dem Du siehst, wie mit den angegebenen Benutzerdaten verfahren wird.

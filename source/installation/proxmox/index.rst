@@ -616,36 +616,35 @@ Prüfsummendatei (<filename>.sha256)
 
 .. code::
 
-   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.1/OPNsense-22.1.2-OpenSSL-checksums-amd64.sha256
-
+   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.7/OPNsense-22.7-OpenSSL-checksums-amd64.sha256
+   
 Signatur Datei (<filename>.sig)
 	
 .. code:: 
 
-   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.1/OPNsense-22.1.2-OpenSSL-dvd-amd64.iso.bz2.sig
+   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.7/OPNsense-22.7-OpenSSL-dvd-amd64.iso.bz2.sig
 
 Der öffentliche Schlüssel von OPNsense |reg| (<filename>.pub)
 
 .. code::
 
-   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.1/OPNsense-22.1.pub
+   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.7/OPNsense-22.7.pub
 
 Die komprimierte ISO Datei (<filename>.iso.bz2)
 
 .. code::
 
-   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.1/OPNsense-22.1.2-OpenSSL-dvd-amd64.iso.bz2
-
+   wget https://mirror.informatik.hs-fulda.de/opnsense/releases/22.7/OPNsense-22.7-OpenSSL-dvd-amd64.iso.bz2
+   
 Überprüfen der heruntergeladenen Dateien auf deren Integrität:
 
 .. code::
    
-   openssl base64 -d -in OPNsense-22.1.2-OpenSSL-dvd-amd64.iso.bz2.sig -out /tmp/image.sig
-
+   openssl base64 -d -in OPNsense-22.7-OpenSSL-dvd-amd64.iso.bz2.sig -out /tmp/image.sig
 
 .. code::
 
-   openssl dgst -sha256 -verify OPNsense-22.1.pub -signature /tmp/image.sig OPNsense-22.1.2-OpenSSL-dvd-amd64.iso.bz2
+   openssl dgst -sha256 -verify OPNsense-22.7.pub -signature /tmp/image.sig OPNsense-22.7-OpenSSL-dvd-amd64.iso.bz2
 
 Der letzte Befehl sollte Dir ein ``Verified OK`` liefern.
 
@@ -653,7 +652,7 @@ Nun gilt es, die ISO-Datei auszupacken. Das machst Du mit folgendem Befehl:
 
 .. code::
 
-   bunzip2 OPNsense-22.1.2-OpenSSL-dvd-amd64.iso.bz2
+   bunzip2 OPNsense-22.7-OpenSSL-dvd-amd64.iso.bz2
 
 Das Entpacken kann einige Zeit in Anspruch nehmen. Anschließend sollte sich in dem Verzeichnis die OPNsense-ISO-Datei befinden. Die daneben befindlichen anderen OPNsense-Datei kannst Du nun wieder löschen.
 
@@ -709,7 +708,7 @@ Klicke dann auf ``Next``.
 Wähle nun hier unter ``Storage`` den geeigneten Datenspeicher auf, um die Festplatte der VM dort abzulegen. In der Abb. wird der Datenspeicher ``Dataset`` verwendet.
 In dem Drop-down Menü siehst Du alle in Deinem System verfügbaren Datenspeicher.
 
-.. hint:: Folgende Größenangaben beziehen sich, wie schon geschrieben, auf eine Testumgebung. Für andere Einsatzszenarien solltest Du Dich unbedingt mit den `Hardware-Anforderungen <https://docs.opnsense.org/manual/hardware.html#hardware-requirements>`_ gemäß der OPNsense |reg| -Dokumentation auseinandersetzen.
+.. hint:: Folgende Größenangaben beziehen sich, wie schon geschrieben, auf eine Testumgebung. Für andere Einsatzszenarien solltest Du Dich unbedingt mit den `Hardware-Anforderungen <https://docs.opnsense.org/manual/hardware.html#hardware-requirements>`_ gemäß der OPNsense |reg| -Dokumentation auseinandersetzen. Wie in der Dokumentation schon ausgeführt, solltest Du hier besser mindestens 8 GiB RAM und 50 GiB HDD wählen.
 
 .. figure:: media/proxmox-create-vm-opnsense-04.png
    :align: center
@@ -902,7 +901,7 @@ Nachher:
 Hinzufügen einer seriellen Schnittstelle
 ++++++++++++++++++++++++++++++++++++++++
 
-Damit Dir `Copy-and-paste` in der Oberfläche von Proxmox bei der Auswahl unter ``Console`` zur Verfügung steht, musst Du die Nutzung von `xterm.js` ermöglichen. Als vorbereitende Maßnahmen musst Du eine serielle Schnittstelle für die VM aktivieren.
+Damit Dir `Copy-and-paste` in der Oberfläche von Proxmox bei der Auswahl unter ``Console`` zur Verfügung steht, musst Du die Nutzung von `xterm.js` ermöglichen. Als vorbereitende Maßnahmen musst Du eine serielle Schnittstelle für die jeweilige VM aktivieren.
 
 .. figure:: media/xterm-opnsense_001.png
    :align: center
@@ -930,7 +929,7 @@ Klicke auf ``Add``, anschließend sollte der gezeigte Menüpunkt nicht mehr ausg
 
 Kontrolliere nochmals alle Einstellungen der neu angelegten VM.
 
-Die beiden letzten Einstellungen musst Du nochmals für den Server einrichten.
+Die beiden letzten Einstellungen musst Du **nochmals für den Server** einrichten.
 
 .. hint:: Für die weitere Nutzung von xterm.js ist allerdings noch eine Anpassung bei der laufenden OPNsense |reg| bzw. dem Server nötig. Die nimmst Du zu einem geeigneten späteren Zeitpunkt vor, bis dahin musst Du noch die Konsole ``noVNC`` nutzen.
 

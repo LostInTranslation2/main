@@ -200,47 +200,12 @@ Sämtliche Änderungen müssen mit ``Speichern & Übernehmen`` übernommen werde
 Dateien-Übertragungs-Funktion
 -----------------------------
 
-Eine nützliche Funktion für Unterrichtsarbeit mit Dateien bietet linuxmuster.net mit der ``Aus- & Einsammeln-Funktion``.
+Eine nützliche Funktion für Unterrichtsarbeit mit Dateien bietet linuxmuster.net mit der ``Austeilen- & Einsammeln-Funktion``.
 Auf der Kursseite finden Sie im unteren Bereich die ``Teilen`` und ``Einsammeln`` Funktionen, welche sich auf alle
-Kursteilnehmer beziehen. Neben jedem Benutzer selbst gibt es ``Teilen`` und ``Einsammeln`` Funktionen, welche auf
+Kursteilnehmer beziehen. Neben jedem Benutzer selbst gibt es ``Austeilen`` und ``Einsammeln`` Funktionen, welche auf
 einzelne Benutzer angewendet werden. 
 
-TEILEN
-------
-
-Dateien auf ganzen Kurs übertragen: per Drag & Drop können Datei(en) eingefügt werden, welche auf die PCs
-der Kursteilnehmer kopiert werden.
-
-.. figure:: media/18_webui-basics_share-icon.png
-   :align: center
-   :alt: WebUI Share Icon
-
-.. hint::
-
-   **Teilen zu bestimmtem Benutzer**: per Drag & Drop können Datei(en) eingefügt werden, welche auf den PC des 
-   ausgewählten Benutzers kopiert werden.
-
-EINSAMMELN
-----------
-
-Kopiere Übertragung des ganzen Kurses: Sammelt die bearbeitete Datei/en des Kursteilnehmers wieder ein,
-ohne Sie vom Benutzer zu löschen.
-Sammle Übertragung des ganzen Kurses ein Sammelt die bearbeitete Datei/en des ausgewählten Benutzers
-wieder ein und löscht Sie vom PC der Kursteilnehmer.
-
-.. figure:: media/19_webui-basics_collect-icon.png
-   :align: center
-   :alt: WebUI Collect Icon
-
-**Einsammeln zu bestimmtem Benutzer**: Dateien kopieren: Sammelt die bearbeitete Datei/en des 
-ausgewählten Benutzers wieder ein ohne Sie vom Benutzer zu löschen. 
-
-**Dateienen einsammeln**: Sammelt die bearbeitete Datei/en des ausgewählten Benutzers wieder ein und löscht 
-   Sie vom PC des Benutzers.
-
-.. figure:: media/20_webui-basics_collect-share-overview.png
-   :align: center
-   :alt: WebUI Collect Share Overview
+Weitere Erläuterungen sind im Abschnitt `Austeilen und Einsammeln <https://docs.linuxmuster.net/de/latest/classroom/exam-and-transfer.html#austeilen-und-einsammeln>`_ zu finden.
 
 Prüfungsmodus
 -------------
@@ -262,18 +227,20 @@ Schülern im Prüfungsmodus ist automatisch die WLAN-, Internet- & Drucker-Freig
 angepasst werden. Um den Prüfungsmodus zu terminieren, den Haken bei jedem Kursmitglied entfernen und ``Speichern & Übernehmen`` 
 ausführen.
 
+Weitere Hinweise sind im Abschnitt `Prüfungsmodus Klassenarbeitsmodus <https://docs.linuxmuster.net/de/latest/classroom/exam-and-transfer.html#prufungsmodus-klassenarbeitsmodus>`_ zu finden.
+
 Einschreiben
 ------------
 
 Dieser Abschnitt dient Lehrern dazu sich in Schulklassen, Projekte oder zu Druckern einzuschreiben. Lehrer ordnen sich hier
-beispielsweise zu Beginn des Schuljahres den jeweiligen Klassen zuordnen.
+beispielsweise zu Beginn des Schuljahres den jeweiligen Klassen zu.
 
 .. figure:: media/23_webui-basics_subscript-classes.png
    :align: center
    :alt: WebUI Subscript Classes
 
 Ein jeweiliges Objekt zum Einschreiben auswählen oder den Haken entfernen um daraus auszutreten. Geänderte
-Einstellungen werden gelb angezeigt. Um die Änderungen anzuwenden, auf Übernehmen klicken. In diesem Abschnitt
+Einstellungen werden gelb angezeigt. Um die Änderungen anzuwenden, auf ``Übernehmen`` klicken. In diesem Abschnitt
 finden Sie eine übersichtliche Darstellung zu zugehörigen Schulklassen, Druckern und Projekten. Für detaillierte
 Informationen zu einem Objekt, dieses anklicken.
 
@@ -288,7 +255,7 @@ unten links bestätigen.
    :align: center
    :alt: WebUI Besome Object Member
 
-**Aus Objekt austreten**: Den Haken des jeweiligen Objektes entfernen und anschließend mit der ``Übernhemen-Taste`` 
+**Aus Objekt austreten**: Den Haken des jeweiligen Objektes entfernen und anschließend mit der ``Übernehmen-Taste`` 
 unten links bestätigen.
 
 .. figure:: media/26_webui-basics_leave-object.png

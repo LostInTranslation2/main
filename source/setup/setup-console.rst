@@ -121,7 +121,7 @@ Danach gelangst Du zur Angabe der sogenannten Domain. Beachte bei dessen Festleg
 
    Weitergehende Informationen findest du hier: https://wiki.samba.org/index.php/Active_Directory_Naming_FAQ
 
-Nachdem du deine Eingabe getätigt hast, bestätige diese mit ``< OK >``. 
+Bestätige Deine Eingabe mit ``< OK >``. 
 
 Es erscheint der IP-Adressbereich, der für die Rechneraufnahme mit Linbo reserviert wird. In der Abb. ist dies der Bereich ``10.0.0.100`` bis ``10.0.0.200``.
 
@@ -137,7 +137,7 @@ Hier setzt Du ein neues Administrations-Kennwort. Dieses wird zugleich das neue 
    :align: center
    :alt: Terminal Setup: Parameter 4
 
-.. hint:: Passwortbeschränkungen: Valid characters are: a-z A-Z 0-9 ?!§+-@#$%&*( )[ ]{ }
+.. hint:: Passwortbeschränkungen: Valid characters are: a-z A-Z 0-9 ?!§+-@#%&*( )[ ]{ }
 
 .. hint::
 
@@ -148,6 +148,10 @@ Hier setzt Du ein neues Administrations-Kennwort. Dieses wird zugleich das neue 
       * pgmadmin (AD)
       * linbo (/etc/rsyncd.secrets)
    * Es sollten die Passwörter der o.g. User nach dem Setup geändert werden, sodass jeder User ein eigenes Password hat.
+   * Achte darauf, dass Dein Passwort den Komplexitätsanforderungen entspricht, die mit samba4 aktiviert sind: 
+     Mind. 7 Zeichen, Groß- und Kleinbuchstaben, Ziffern und Sonderzeichen (zulässige Sonderzeichen wie oben genannt)
+   * In der Datei ``/etc/linuxmuster/sophomorix/default/school/school.conf`` sind die Kennwortlängen für Schüler (Standard: 10 Zeichen) und Lehrer (12 Zeichen) angegeben.
+   * Die Grundeinstellungen für Kennwörter in samba4 kannst Du Dir auf dem Server in der Konsole mit ``samba-tool domain passwordsettings show`` anzeigen lassen.
 
 
 Gebe das Kennwort ein und klicke auf ``< OK >``.

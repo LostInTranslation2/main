@@ -211,7 +211,7 @@ e) und mit Enter bestätigen, dann sollte sich ähnliche Darstellung zeigen:
    :align: center
    :alt: Win10 Confirm Config Data
 
-f) um die Datei nun in den richtigen Ordner zu kopieren, den Befehl ``mv /srv/linbo/examples/win10.global.reg /srv/samba/global/management/global-admin/`` eingeben.
+f) um die Datei nun in den richtigen Ordner zu kopieren, den Befehl ``cp /srv/linbo/examples/win10.global.reg /srv/samba/global/management/global-admin/`` eingeben.
 
 .. figure:: media/38_windows-10-clients_move-global-reg.png
    :align: center
@@ -266,7 +266,7 @@ Manueller Domänen Join für Windows
 ----------------------------------
 
 1. Über ``Systemsteuerung → System und Sicherheit → System → Einstellungen Ändern → Ändern → Computernamen`` 
-   vergeben (übereinstimmend mit Namen in dern Geräteliste!) und unter Mitglied von als Domäne linuxmuster.lan
+   vergeben (übereinstimmend mit Namen in dern Geräteliste!) und unter Mitglied von als Domäne die im Schritt Setup mit der Schulkonsole oder Setup im Terminal gewählten Domain namen, z.B. linuxmuster.lan
    angeben. Mit ``global-admin`` und Ihrem beim Setup vergebenen Passwort bestätigen:
 
 .. figure:: media/43_windows-10-clients_login-as-global-admin.png
@@ -296,7 +296,7 @@ Hierbei ist es notwenig, das für das Image in der Registry, den Namen der PCs j
 
    Achtung: Nachdem eine Template-Maschine frisch der Domain gejoined ist, darf diese vor dem Upload nicht neugestartet
    werden, da sonst das durch den DomainJoin neu erstellte Maschinenpasswort in der AD für diese Maschine mit einem 
-   falschen Maschinenpasswort ersetzt werden würde. Durch den Image-Upload wird das neue Passwort ausgelesen und in die reg-Datei 
+   falschen Maschinenpasswort ersetzt werden würde. Durch den Image-Upload wird das neue Passwort ausgelesen und in die macct-Datei 
    geschrieben, die zu dem Image gehört.
 
 
@@ -354,7 +354,7 @@ Klicke nun unten auf die Drop-down Liste ``Copy from -> win10.image.reg``. Es wi
 
 .. code::
 
-   :setzt den Domänennamen richtig
+   ;setzt den Domänennamen richtig
    [HKEY_LOCAL_MACHINE\System\ControlSet001\Services\Tcpip\Parameters]
    "Domain"="<SAMBADOMAIN>"
    [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
@@ -399,3 +399,30 @@ Linuxmuster.net sieht vor, dass **Programminstallationen von "global-admin"** du
 5. Melde Dich als lokaler User ab und als global-admin an
 6. Fahre den Rechner herunter
 7. Starte den Rechner neu und erstellen ein neues Image mit LINBO.
+
+Zeitprobleme lösen
+==================
+
+Auch wenn bereits beim Start über linbo die Systemzeit synchonisiert wird, sollte auch Windows statt der standardmäßigen Microsoft-Server im Internet den linuxmuster.net Server als NTP-Zeitserver benutzen. Dies kann z.B. per GPO (Computerkonfiguration - Administrative Vorlagen, System, Windows-Zeitdienst und Zeitanbieter) konfiguriert werden.
+
+Bei der Synchronisation zwischen Client und Server kann es zu Beginn zu Zeitabweichungen kommen.
+
+Diese sind dadurch zu beheben, indem Du auf dem linuxmuster.net Server ein Skript aufrufst, welches die NTP-Konfiguration anpasst.
+
+Öffne auf dem Server eine Konsole als Benutzer ``root`` und gebe folgenden Befehl ein:
+
+.. code::
+
+  /usr/share/linuxmuster/fix-ntp_signd-dir.sh
+  
+Es wird hierdurch das Verzeichnis für NTP Sockets auf dem Server repariert, so dass Windows Clients erfolgreich hierauf zugreifen können. Danach sollte der Zeitabgleich via NTP erfolgreich durchlaufen.
+
+.. hint:: Die Systemzeit sollte möglichst synchron mit dem Server sein, um Probleme mit der Domänenanmeldung, dem Domänenbeitritt zu vermeiden! Auch andere Dienste (z.B. WSUS, KMS, ...) machen bei großen Differenzen Probleme.
+
+
+  
+  
+
+
+
+

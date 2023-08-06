@@ -27,6 +27,7 @@ Anlegen und Installieren des Servers
    
    Achte darauf, dass vor dem Start der VM beide Festplatten der VM zugewiesen wurden.
 
+
    Bei der Einrichtung des Servers musst Du nur einen Server mit 2 HDDs haben und Ubuntu 18.04 auf der ersten HDD installieren. Die zweite HDD bleibt frei. Auf dieser 2. HDD richtest Du - wie nachstehend beschrieben -  ein LVM ein.
 
 Erster Start des Servers vom Installationsmedium
@@ -167,7 +168,9 @@ Für das Setup werden noch weitere Partitionen benötigt. Dafür haben wir uns f
 
 .. [#f1] Sollte Deine Festplatte größer sein als die vorgeschlagene Mindestgröße so wird für diese Partition der maximal übrige freie Platz mit verwendet.
 
-Unser linuxmuster-setup nimmt Dir die nötigen vorbereitenden Aktionen ab. Du läßt also das `zweite Speichermeddium unkonfiguriert`.
+.. attention::
+
+   Unser linuxmuster-setup nimmt Dir die nötigen vorbereitenden Aktionen ab. Du läßt also das `zweite Speichermedium unkonfiguriert`.
 
 Zum Abschluss werden Dir die Partitionsierungseinstellungen gemäß Deiner Eingaben angezeigt.
 
@@ -177,6 +180,10 @@ Wenn Du es für Deine Installation nutzen willst, dann kannst Du die nächsten P
 
 Speicherplatz nach Deinen Vorgaben (optional)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. tip::
+
+  Alternativ kannst Du die zweite Platte mit anderen Größenangaben auch mit linuxmuster-prepare im Zuge des Setup ausführen. Möchtest Du dies so durchführen, kannst Du nachstehende Punkte überspringen.
 
 Solltest Du Dich für eine andere Größeneinteilung oder für eine Einrichtung auf realen Festplatten entschieden haben, dann geht es hier für Dich weiter.
 
@@ -479,6 +486,9 @@ Anschließend sollte der Log-in nach der Eingabe des Passwortes ``Muster!`` erfo
 
 .. figure:: media/basis_server_026.png
 
+
 Mit ``0) Logout`` beendest Du die Verbindung.
+
+.. hint:: Für Anwender einer Vrtualisierungslösung empfehlen wir an dieser Stelle einen Snapshot zu erstellen!
 
 Weiter geht es jetzt mit :ref:`lmn_pre_install-label`

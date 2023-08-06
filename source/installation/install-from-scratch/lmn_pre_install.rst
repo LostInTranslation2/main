@@ -9,8 +9,50 @@ Server auf lmn7.1 vorbereiten
 .. sectionauthor:: `@rettich <https://ask.linuxmuster.net/u/rettich>`_,
                    `@cweikl <https://ask.linuxmuster.net/u/cweikl>`_
                    `@MachtDochNiX <https://ask.linuxmuster.net/u/MachtDochNiX>`_
+                  
 
-Nachdem Du die Firewall und den Server wie beschrieben installiert hast, müssen beide Maschinen fertig konfiguriert werden. Um dieses zu vereinfachen, stellen wir Dir das Skript ``lmn-prepare`` zur Verfügung.
+Nachdem Du die Firewall und den Server wie beschrieben installiert hast, müssen beide Maschinen fertig konfiguriert werden.
+
+Passe zuerst die Zeitzone an und deinstalliere cloud-init.
+
+Vorbereitungen
+==============
+
+Zeitservereinstellungen überprüfen
+----------------------------------
+
+Nachdem Du nun den Server vorbereitet hast, überprüfe die Zeiteinstellungen auf dem Server. Dazu gibst Du in der Konsole folgenden Befehl an:
+
+.. code-block:: Bash
+
+   timedatectl
+   
+Es wird hier noch die UTC-Zeit angegeben. Wie für die OPNsense muss nun die Zeitzone angepasst werden.
+Die erfolgt mit folgendem Befehl:
+
+.. code-block:: Bash
+
+   sudo timedatectl set-timezone Europe/Berlin
+   # erneute Ausgabe der Zeiteinstellungen mit
+   timedatectl
+   
+Du solltest nun als Zeitzone ``Europe/Berlin`` und die korrekte Lokalzeit sowie die korrkte UTC - Zeit angezeigt bekommen.
+ 
+ 
+Cloud-init deinstallieren
+-------------------------
+
+Cloud-init kannst Du unter Ubuntu mit folgenden Schritten löschen:
+
+.. code-block:: Bash
+
+   # Disable start
+   sudo touch /etc/cloud/cloud-init.disabled
+   # Uninstall
+   sudo apt-get purge cloud-init
+   sudo rm -rf /etc/cloud/ && sudo rm -rf /var/lib/cloud/
+   # Reboot
+   sudo reboot
 
 Das Skript lmn-prepare
 ========================
@@ -24,9 +66,9 @@ Führe danach folgende Befehle in der Eingabekonsole aus:
 
 .. code-block:: Bash
 
-   wget -qO - "https://deb.linuxmuster.net/pub.gpg" | sudo apt-key add -
+   sudo wget -qO- "https://deb.linuxmuster.net/pub.gpg" | gpg --dearmour -o /usr/share/keyrings/linuxmuster.net.gpg
 
-.. hint:: -qO --> [-][q][Großbuchstabe O]
+.. hint:: -O --> [-][Großbuchstabe O]
 
 Damit installierst Du den Key für das Repository von linuxmuster.net und aktivierst ihn.
 
@@ -34,7 +76,7 @@ Die nächste Zeile fügt das Linuxmuster 7.1 Repository hinzu.
 
 .. code-block:: Bash
 
-   sudo sh -c 'echo "deb https://deb.linuxmuster.net/ lmn71 main" > /etc/apt/sources.list.d/lmn71.list'
+   sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/linuxmuster.net.gpg] https://deb.linuxmuster.net/ lmn71 main" > /etc/apt/sources.list.d/lmn71.list'
 
 Aktualisiere die Softwareliste des Servers mittels
 
@@ -56,7 +98,31 @@ Nachdem Du den Befehl mit ``J`` bestätigt hast, wird das Skript lmn-prepare auf
    - das Netzwerk konfiguriert und
    - im Falle des Serverprofils das LVM eingerichtet.
 
-.. attention:: Wichtiger Hinweis, schon jetzt! 
+Default-Locale setzen
+---------------------
+
+Passe noch vor der Ausführung von lmn-prepare auf dem Server die ``Default-Locale`` an.
+
+Erzeuge zuerst die Locales mit:
+
+.. code-block:: Bash
+
+   $sudo locale-gen
+   Generating locales (this might take a while)...
+   de_DE.UTF-8... done
+   en_GB.UTF-8... done
+   en_US.UTF-8... done
+   fr_FR.UTF-8... done
+   Generation complete.
+
+Setze nun die Default-Locale. Diese muss unbedingt in o.g. Ausgabe enthalten sein!
+
+.. code-block:: Bash
+
+   $sudo localectl set-locale LANG=de_DE.UTF-8
+
+
+.. attention:: Wichtiger Hinweis, schon jetzt!
 
    Solltest Du mit Deiner Konfiguration von unseren Standard-Vorgaben bei dem zuletzt genannten Punkt abweichen, müssen Deine Einstellungen unbedingt vor dem Aufruf des Skriptes lmn-prepare eingearbeitet sein!
 
@@ -107,131 +173,95 @@ Hier ein Auszug mit den benötigten Optionen, die Du gleich anwenden wirst.
    |...|
    -p, --profile=<profile>     : Host profile to apply, mandatory. Expected
                                  values are "server" or "ubuntu".
+   -l, --pvdevice=<device>     : Initially sets up lvm on the given device (server
+                                 profile only). <device> can be a partition or an
+                                 entire disk.
+   -v, --volumes=<volumelist>  : List of lvm volumes to create (to be used together
+                                 with -l/--pvdevice). Syntax (size in GiB):
+                                 <name>:<size>,<name>:<size>,...
    |...|
 
 #####
 
-Installation mit unseren Standard-Vorgaben
-------------------------------------------
+Installation mit Standard-Vorgaben
+----------------------------------
 
-.. code-block:: Bash
-
-   lmn-prepare -i -p server
-
-.. Jetzt ist es an der Zeit, dass Du Dich zurücklehnst und den Verlauf beobachtest.
-
-.. Nach dem das Skript abgearbeitet ist, steht dem :ref:`setup-label` nichst mehr im Wege.
-
-#####
-
-Installation mit Deinen Vorgaben:
----------------------------------
-
-.. code-block:: Bash
-
-   lmn-prepare -i -x -p server
-
-#####
-
-Ausgaben des Befehls und Deine Eingaben
----------------------------------------
-
-.. hint:: Im Folgenden beschreiben wir die Eingaben für unsere Standard-Vorgaben. In der Regel kannst Du diese einfach mit ``Enter`` übernehmen. Wo Eingaben nötig bzw. Anpassungen möglich sind, erhältst Du nachstehend einen Hinweis.
-
-Du hast das Skript aufgerufen und erhältst folgende Ausgabe:
-
-.. code-block:: Bash
-
-   ### lmn-prepare
-   ## Force is given, skipping test for configured system.
-   ## Profile
-   Enter host profile [server, ubuntu] [server]:
-
-Das vorausgewählte Profil `server` kannst Du mit ``[ENTER]`` übernehmen, da Du ja den Server einrichten willst.
-
-#####
-
-.. code-block:: Bash
-
-   ## Network
-   Enter network interface to use ['ens18']:
-
-Das Netzwerk-Interface sollte richtig erkannt sein, da Du ja nur eines für den Server eingerichtet hast. Also wieder mit ``[ENTER]`` bestätigen.
-
-#####
-
-.. code-block:: Bash
-
-   Enter ip address with net or bitmask [10.0.0.1/16]:
-
-.. hint:: An dieser Stelle ist die Eingabe eines abweichenden Netzwerk-Bereichs möglich, dafür müsstest Du den IP-Bereich und die zu verwendende Netzwerkmaske eingeben. Gibst Du keine ein, übernimmst Du mit ``[ENTER]`` unsere Standard-Vorgabe, wie angezeigt.
-
-#####
-
-.. code-block:: Bash
-
-   Enter firewall ip address [10.0.0.254]:
-
-Die Adresse der Firewall wird automatisch Deiner zuvor gemachten Eingabe angepasst. 
-
-.. hint:: Alternativ könntest Du sie anpassen, wenn die Firewall eine andere als die angezeigte haben sollte.
-
-#####
-
-.. code-block:: Bash
-
-   Enter gateway ip address [10.0.0.254]:
-
-Auch die Adresse des Gateways sollte automatisch angepasst sein.
-
-.. hint:: Ansonsten müsstest Du hier nochmals tätig werden.
-
-#####
-
-.. code-block:: Bash
-
-   Enter hostname [server]: 
-
-Auch hier gilt Übernahme der Vorgabe mit ``[ENTER]``.
-
-.. hint:: Änderungen möglich.
-
-#####
-
-.. code-block:: Bash
-
-   Enter domainname [linuxmuster.lan]:
-
-.. hint:: Auch hier ist eine individuelle Anpassung möglich, wenn Du nicht unsere Standard-Vorgabe nutzen willst. Dabei gilt aber zu beachten, dass |...|
-
-.. attention:: 
-
-   |...| die Länge des ersten Teils der Domäne maximal 15 Zeichen betragen darf.
-  
-   Die Domäne „muster-gymnasium.de“ überschreitet diese Grenze um ein Zeichen, da „muster-gymnasium“ 16 Zeichen lang ist.
-
-   Eine gute Wahl ist beispielsweise ``linuxmuster.lan``!
-
-#####
-
-.. code-block:: Bash
-
-   Enter physical device to use for LVM []: /dev/sdb
-
-Für die Verwendung unserer Vorgaben musst Du den Speicherort für das LVM angeben. Die benötigte Eingaben hast Du zuvor ja ermittelt.
-
-Falls nicht, kannst Du dies hier :ref:`lsblk-command` nachlesen.
-
-Nachstehend erfolgt die Angabe beispielhaft für die zweite erkannte Festplatte:
+Hast Du eine zweite HDD mit 100GiB kannst Du lmn-prepare mit den Standard-Werten ausführen.
 
 .. code::
 
-   /dev/sdb
+   lmn-prepare -i -p server -l /dev/sdb -u
 
-.. hint:: Bei anderen Partitionsgrößen hast Du das LVM bei der Ubuntu-Servers-Installation angelegt. Um es zu verwenden, musst Du an dieser Stelle einfach nur die ``[Enter]``-Taste drücken. Die bei Aufruf des Installationsscripts übergebene Option ``-x`` veranlasst, dass es so übernommen wird.
 
-#####
+Mit dem Parameter ``-u`` wird dann ein LVM - hier auf der 2. Festplatte (sdb) - mit folgenden Werten eingerichtet:
 
-Jetzt ist es an der Zeit, dass Du Dich zurücklehnst und den Verlauf beobachtest.
+- var: 10 GiB
+- linbo: 40 GiB
+- global: 10GiB
+- default-school: restlicher Plattenplatz
 
-Nachdem das Skript abgearbeitet ist, steht dem :ref:`setup-label` nichts mehr im Wege.
+
+Installation mit Deinen Vorgaben
+---------------------------------
+
+Nachstehendes Beispiel geht davon aus, dass Du eine zweite HDD mit einer Größe von 1TiB hast.
+
+.. code-block:: Bash
+
+   lmn-prepare -i -p server -l /dev/sdb -v var:50,linbo:500,global:50,default-school:100%FREE
+
+Für zusätzliche Informationen bitte https://github.com/linuxmuster/linuxmuster-prepare beachten.
+
+Es wird hier also eine Erstinstallation (-i) mit dem Profil ``server`` auf der zweiten Festplatte (/dev/sdb) durchgeführt. Auf der zweiten Platte  werden vier Volumes mit 
+
+- var: 50GiB
+- linbo: 500GiB
+- global: 50GiB
+- default-school: verbleibender Rest der zweiten Festplatte - hier 400 GiB -
+
+eingerichtet.
+
+.. attention::
+
+   Passe die Größenangaben auf Deine Situation an.
+
+Ablauf
+------
+
+Es wird zuerst das LVM auf der zweiten Platte eingerichtet, danach werden alle erforderliche Pakete geladen und installiert. Dies kann etwas dauern. Nach Abschluss des Installations- und Vorbereitungsarbeiten wirst Du aufgefordert, den Server neu zu starten.
+
+.. code-block:: Bash
+
+   ## Passwords
+   # root ... OK!
+   # linuxadmin ... OK!
+   ## Writing configuration
+   
+   ## The system has been prepared with the following values:
+   # Profile   : server
+   # Hostname  : server
+   # Domain    : linuxmuster.lan
+   # IP        : 10.0.0.1
+   # Netmask   : 255.255.0.0
+   # Firewall  : 10.0.0.254
+   # Gateway   : 10.0.0.254
+   # Interface : ens18
+   # Swapsize  : 2G
+   # LVM device: /dev/sdb
+   # LVM vlms  : var:10,linbo:40,global:10,default-school:100%FREE
+  
+   ### Finished - a reboot is necessary!
+
+
+Ist lmn-prepare ohne Fehler durchgelaufen, führe nun noch folgenden Befehl aus:
+
+.. code-block:: Bash
+
+   pip3 install jinja2
+
+Es erscheint ggf. der Hinweis, dass die Abhängigkeiten bereits erfüllt sind.
+
+
+Starte danach den Server neu mit dem Befehl: ``reboot``.
+
+Danach steht dem :ref:`setup-label` nichts mehr im Wege.

@@ -93,25 +93,25 @@ Bind-Einstellungen
 
 4. Trage in Moodle die unter 3. angezeigten Daten in Moodle für den Bind-User nach dem nachstehenden Schema ein:
 
-+----------------+--------------------------------------------------------------------------------+
-| Anmeldename    | CN=moodle-binduser,OU=Management,OU=GLOBAL,DC=linuxmuster,DC=lan               |
-+----------------+--------------------------------------------------------------------------------+
-|                | DC=linuxmuster,DC=lan sind mit den Angaben der eigenen Domäne zu ersetzen.     |
-+----------------+--------------------------------------------------------------------------------+
-| Kennwort       | geheim (angezeigtes Kennwort, das in der datei hinterlegt wurde)               |
-+----------------+--------------------------------------------------------------------------------+
-|                | Kennwort des Bind-Users wurde unter 1. in einer Datei auf dem Server abgelegt. |
-+----------------+--------------------------------------------------------------------------------+
-|                | zur Anzeige ist der Befehl unter 3. erforderlich                               |
-+----------------+--------------------------------------------------------------------------------+
-| Nutzertyp      | MS ActiveDirectory                                                             |
-+----------------+--------------------------------------------------------------------------------+
-| Kontexte       | OU=schools,DC=linuxmuster,DC=lan                                               |
-+----------------+--------------------------------------------------------------------------------+
-|                | Die DC-Einträge sind durch die, der eigenen Domäne zu ersetzen.                |
-+----------------+--------------------------------------------------------------------------------+
-| Subkontexte    | Ja                                                                             |
-+----------------+--------------------------------------------------------------------------------+
++----------------+-------------------------------------------------------------------------------------+
+| Anmeldename    | CN=moodle-binduser,OU=Management,OU=default-school,OU=SCHOOLS,DC=linuxmuster,DC=lan |
++----------------+-------------------------------------------------------------------------------------+
+|                | DC=linuxmuster,DC=lan sind mit den Angaben der eigenen Domäne zu ersetzen.          |
++----------------+-------------------------------------------------------------------------------------+
+| Kennwort       | geheim (angezeigtes Kennwort, das in der datei hinterlegt wurde)                    |
++----------------+-------------------------------------------------------------------------------------+
+|                | Kennwort des Bind-Users wurde unter 1. in einer Datei auf dem Server abgelegt.      |
++----------------+-------------------------------------------------------------------------------------+
+|                | zur Anzeige ist der Befehl unter 3. erforderlich                                    |
++----------------+-------------------------------------------------------------------------------------+
+| Nutzertyp      | MS ActiveDirectory                                                                  |
++----------------+-------------------------------------------------------------------------------------+
+| Kontexte       | OU=schools,DC=linuxmuster,DC=lan                                                    |
++----------------+-------------------------------------------------------------------------------------+
+|                | Die DC-Einträge sind durch die, der eigenen Domäne zu ersetzen.                     |
++----------------+-------------------------------------------------------------------------------------+
+| Subkontexte    | Ja                                                                                  |
++----------------+-------------------------------------------------------------------------------------+
 
 
 Weitere Einstellungen
@@ -185,8 +185,32 @@ Weitere Einstellungen
 | Daten übernehmen (E-Mail-Adresse)   | Leer                                                      |
 +-------------------------------------+-----------------------------------------------------------+
 
-Die Änderungen sind abschließend über Schaltfläche am Seitenende zu sichern. In der Übersicht 
+**Nutzersuche (user lookup)**
+
++-------------------------------------+-----------------------------------------------------------+
+| ObjectClass (auth_ldap|objectclass) | (\|(sophomorixRole=teacher)(sophomorixRole=student))      |
++-------------------------------------+-----------------------------------------------------------+
+|                                     | Filter: Nur Lehrer und SuS, keine Maschinen-Accounts      |
++-------------------------------------+-----------------------------------------------------------+
+
+Zum Testen, ob der Filter korrekt arbeitet, sollte zugleich die Einstellung zur Synchronisierung von 
+Nutzerkonten wie folgt angepasst werden:
+
+**Synchronisierung von Nutzerkonten (user account synchronisation)**
+
++-------------------------------------+-----------------------------------------------------------+
+| Entfernte externe Nutzer/innen      |  für Tests: intern sperren (suspend  internal)            |                                    
+| (auth_ldap|removeuser)              |                                                           |
++-------------------------------------+-----------------------------------------------------------+
+|                                     | danach: intern löschen (delete internal)                  |
++-------------------------------------+-----------------------------------------------------------+
+
+Die Änderungen sind abschließend über die Schaltfläche am Seitenende zu sichern. In der Übersicht 
 der ``Aktiven Plugins`` ist der LDAP-Server zur Authentifizierung zu aktivieren.
+
+.. attention::
+
+   Nachdem alle Einstellungen getroffen sind, unbedingt alle Caches leeren!
 
 Host-Einstellungen
 ==================

@@ -22,10 +22,13 @@ Linbo4, das von linuxmuster.net entwickelt wurde, weist einige Neuerungen auf:
 * qemu-img wird nun genutzt, um die Erstellung und Wiederherstellung der qcow2 Images durchzuführen.
 * Es wird nur noch 64 Bit Client-Hardware unterstützt.
 * linuxmuster.net <=6.2 wird nicht mehr unterstützt.
-* Es gibt derzeit keine differentiellen Images mehr. Differentielle Images werden voraussichtlich erst wieder ab Linbo v4.1 unterstützt.
+* Ab LINBO v4.1 gibt es differentielle Images.
 * Bisherige Images im cloop Format sind direkt in das neue qcow2 Format zu konvertieren.
 
-Dieses Kapitel führt Dich in die Nutzung von linbo4 ein und erklärt die wesentlichen Schritte zur Imageverwaltung.
+Dieses Kapitel führt Dich in die Nutzung von LINBO4 ein und erklärt die wesentlichen Schritte zur Imageverwaltung.
+
+.. hint::
+	Die meisten PC mit UEFI verwenden standardmäßig "SecureBoot". Dies muss deaktiviert werden, um Linbo booten zu können!
 
 Der LINBO Startbildschirm
 -------------------------
@@ -240,7 +243,9 @@ Wird ein neuer Dateiname gewählt, kann man Informationen zu dem neuen Image ver
 
 .. warning:: 
 
-   Vergibt man einen neuen Dateinamen, sollte man sicher stellen, dass die Cache-Partition über ausreichend Platz verfügt, da das alte Image ebenfalls im Cache gespeichert bleibt. Ist nicht genügend Platz vorhanden, dann schlägt das Erstellen des Abbildes fehl.
+   Vergibt man einen neuen Dateinamen, sollte man sicher stellen, dass die Cache-Partition über ausreichend Platz verfügt, da das alte Image ebenfalls im Cache gespeichert bleibt. Ist nicht genügend Platz vorhanden, dann schlägt das Erstellen des Abbildes fehl. Hier ist vor der Erstellung eines neuen Images sicherzustellen, dass die lokale Cache-Partition vorab geleert wird. 
+   
+   Siehe hierzu das Unterkapitel zum Linbo4-Cache am Ende dieses Hauptkapitels.
 
 Es gibt die beiden Optionen zum Abschluss der Aktion ``erstellen`` oder ``erstellen+hochladen`` den Computer neu zu starten oder
 herunterzufahren.
@@ -270,7 +275,7 @@ Dialog: Cache aktualisieren
    :align: center
    :alt: Linbo Update cache
 
-Der Cache wird aktualisiert. Es werden die drei Möglichkeiten der Synchronisation zur Auswahl gegeben: Rsync, Multicast oder Bittorrent.
+Der Cache wird aktualisiert. Es werden die drei Möglichkeiten der Synchronisation zur Auswahl gegeben: Rsync, Multicast oder Torrent.
 
 Dialog: Partitionieren
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -291,6 +296,194 @@ Mit diesem Dialog kann ein erstmalig genutzer Rechner registriert werden. Dafür
 
    Bitte trage für die Rechnergruppe einen Namen ohne Bindestriche `` - `` ein.
 
+LINBO Differenzielles Image erstellen
+-------------------------------------
+
+.. hint::
+
+   Seit der Version LINBO 4.1 ist es möglich, differentielle Images zu erstellen.
+
+``Differentielle Images`` bauen auf einem Vollimage eines Client-Betriebssystems auf und legen alle Änderungen / Ergänzungen seit dem letzten Image ab. Diese werden dann bei einer Synchronisation des Clients vollständig angewendet.
+
+Werden nur kleine Ergänzungen auf dem Client vorgenommen, kann ein differenzielles Image erstellt werden, um das Verteilen der Änderungen möglichst schnell für alle Clients einer Hardware-Klasse durchzuführen. Für die Aktualisierung der Clients werden so, deutlich weniger Daten via Netzwerk übertragen.
+
+Sollten für ein Basisimage bereits mehrere differenzielle Images erstellt worden sein, so kann es sinnvoll sein, wenn viel neue Software installiert wurde, diese wieder duch Erstellung eines Vollimages zu konsolidieren.
+
+Vorbereitungen
+^^^^^^^^^^^^^^
+
+Der betreffende Muster-Client wurde entsprechend angepasst und alle erforderlichen Schritte zur Erstellung eines Images auf Client-Seite durchgeführt.
+
+Für Linux-Clients ist z.B. der Befehl
+
+.. code::
+
+  sudo linuxmuster-linuxclient7 prepare-image
+
+auszuführen.
+
+Danach ist der Client neu zu starten.
+
+Image erstellen
+^^^^^^^^^^^^^^^
+
+Erscheint die LINBO GUI:
+
+.. figure:: media/linbo-diff-images/01-linbo-gui.png
+   :align: center
+   :alt: Linbo GUI
+
+.. figure:: media/linbo-diff-images/02-tools-icon.png
+   :align: left
+   :alt: Tools Icon
+
+Wähle rechts das Werkzeug-Icon aus.
+
+Es erscheint ein neues Fenster, in dem Du das Passwort des Linbo-Admins eingeben musst, um dich zu authentifizieren.
+
+.. figure:: media/linbo-diff-images/03-linbo-password.png
+   :align: center
+   :alt: Linbo Password
+
+Das Kennwort ist bei Eingabe nicht sichtbar. Klicke auf ``Anmelden``. Es erscheint das Werkzeug-Menü.
+
+.. figure:: media/linbo-diff-images/04-linbo-tools-menue.png
+   :align: center
+   :alt: Linbo Tools Menue
+
+Zur Erstellung eines differenziellen Images klicke nun auf das große Icon zur Erstellung eines Images.
+
+.. figure:: media/linbo-diff-images/05-icon-new-image.png
+   :align: center
+   :alt: Linbo New Image
+
+Es erscheint das Menü zur Erstellung neuer oder differenzieller Images.
+
+.. figure:: media/linbo-diff-images/06-menue-new-image.png
+   :align: center
+   :alt: Linbo Menue for Imaging
+
+Wähle die Option ``Neues differenzielles Image erstellen`` aus, trage eine nachvollziehbare Beschreibung für das Image als Text ein.
+
+Wähle zur Erstellung des differenziellen Images den Eintrag ``erstellen + hochladen`` aus, damit zuerst auf dem Client das Image erstellt und dieses im Anschluss auf den Server geladen wird.
+
+.. figure:: media/linbo-diff-images/07-image-create-and-upload.png
+   :align: center
+   :alt: Create + Upload Image
+
+Es werden bei der Erstellung des Images in der Linbo-GUI weitere Status-Meldungen angezeigt. Ist der Prozess der Erstellung und das Hochladen des differenziellen Images auf den Server abgeschlossen, siehst Du folgende Meldung:
+
+.. figure:: media/linbo-diff-images/08-finished-uploading-new-image.png
+   :align: center
+   :alt: Image Creation finished
+
+Starte im Anschluss LINBO neu, indem Du das entsprechende Icon auswählst:
+
+.. figure:: media/linbo-diff-images/09-reboot-linbo.png
+   :align: center
+   :alt: Reboot Linbo
+
+Image synchronisieren
+^^^^^^^^^^^^^^^^^^^^^
+
+Nachdem LINBO neu gestartet wurde, erscheint wieder die LINBO-GUI.
+
+.. figure:: media/linbo-diff-images/10-linbo-boot-icons.png
+   :align: center
+   :alt: Linbo Boot Icons
+
+Wende nun das differenzielle Image auf den Client an, indem Du das grosse Icon zur Synchronisation des Images klickst. Während der lokale Cache aktualisiert wird, siehst Du eine entsprechende Status-Leiste mit dem Fortschritt.
+
+.. figure:: media/linbo-diff-images/11-sync-image.png
+   :align: left
+   :alt: Image Creation finished
+
+Das differenzielle Image wird vom Server geholt und lokal im Cache des Clients angewendet. Danach wird der Client gestartet.
+
+
+WebUI: LINBO-Imageverwaltung
+----------------------------
+
+Alle LINBO-Images werden mit der Zuordnung zu den Hardwaregruppen in der WebUI übersichtlich dargestellt und können hier einfach verwaltet werden.
+
+Neben den Informationen zu den Images wie z.B. Dateigröße und Imagebeschreibungen, lassen sich Images beispielsweise löschen oder anpassen.
+
+Imageverwaltung aufrufen
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. figure:: media/linbo-diff-images/12-gui-images-menue-left.png
+   :align: left
+   :alt: LNBO Image Menue
+
+Um zur Umageverwaltung in der WebUI zu gelangen, meldest Du Dich in der WebUI als ``global-admin`` an. Danach rufst Du links in der Menüspalte ``Geräteverwaltung -> LINBO4`` auf.
+
+.. figure:: media/linbo-diff-images/13-linbo-group-images.png
+   :align: center
+   :alt: LINBO Group Images
+
+Rechts erscheinen im Fenster zunächst die Hardwaregruppen mit den zugeordneten Basis-Images. In nachstehender Abbildung ist das Basis-Image blau hervorgehoben und weist die Dateiendung ``.qcow2`` auf. In der Abbildung ist nur eine Hardwareklasse mit dem zugeordneten Basisimage dargestellt.
+
+Images verwalten
+^^^^^^^^^^^^^^^^
+
+Klicke oben in dem Fenster auf die Reiterkarte ``Abbilder``, so siehst Du eine Gesamtliste aller Abbilder, die mit LINBO erstellt wurden und hier verwaltet werden können.
+
+.. figure:: media/linbo-diff-images/14-group-images-overview.png
+   :align: center
+   :alt: LINBO Image Overview
+
+Unter der Spaltenüberschrift ``Name`` ist der Name und die Dateigröße des Basis-Images abgelegt. Daneben findest Du in der Spalte ``Differentielles Image`` das dem Basis-Image zugeordnete differentielle Image inkl. Angabe der Dateigröße. Zudem wird dargestellt, in welcher Gruppe diese Images verwendet werden. In der Spalte ``Aktionen`` befinden sich Symbole, die Aktionen für das Basis-Image ausführen.
+
+Basis-Image
+^^^^^^^^^^^
+
+.. figure:: media/linbo-diff-images/14-group-images-overview.png
+   :align: center
+   :alt: ImagesOverview
+
+Um das Basis-Image zu verwalten, das in der Image-Übersicht in der Spalte ``Namen`` angegeben wird, findest Du die Aktions-Icons in der Übersicht ganz rechts als etwas größere Symbole.
+
+.. figure:: media/linbo-diff-images/15-basic-image-menue.png
+   :align: center
+   :alt: Basic Image
+
+Klicke auf das Zahnradsymbol. Es erscheint ein Fenster mit Informationen zu dem Basis-Image.
+
+.. figure:: media/linbo-diff-images/16-basic-image-info.png
+   :align: center
+   :alt: Basic Image Info
+
+Hier finden Sie Informationen zum Dateinamen, dem Zeitstempel der Erstellung, der Dateigröße und weiterer Parameter. Die Dateiendung ``.qcow2`` steht für ein Basis-Image.
+
+Hier kannst Du Änderungen bzw. Ergänzungen vornehmen und diese mithilfe des Buttons ``SPEICHERN`` dauerhaft anwenden.
+
+Klicke auf mittlere Icon, um die Sicherungen des Basis-Images im Zeitablauf anzuzeigen.
+
+.. figure:: media/linbo-diff-images/17-basic-image-backups-history.png
+   :align: center
+   :alt: Basic Image Backups
+
+Das aktuell gültige Basis-Image wird mit dem ``Status`` Basis-Image und einem grünen Haken symbolisiert. Im Zeitablauf werden die vorangegangenen Basis-Images dargestellt. Diese können entweder gelöscht (Papierkorb), wiederhergestellt (Pfeil gegen den Uhrzeigersinn) oder deren Besonderheiten eingesehen werden (Zahnradsymbol).
+
+
+Differentielle Images
+^^^^^^^^^^^^^^^^^^^^^
+
+.. figure:: media/linbo-diff-images/18-diff-images-menue.png
+   :align: left
+   :alt: Diff Image
+
+Die beiden kleinen Icons neben dem Namen für das differentielle Image bieten die Möglichkeit, das differentielle Image entweder zu löschen (``Papierkorb``), oder mit dem Zahnrad weitere Informationen zu dem differentiellen Image aufzurufen.
+
+Klickst Du auf das Zahnrad neben dem Namen für das differentielle Image, dann erscheint folgendes Fenster:
+
+.. figure:: media/linbo-diff-images/19-diff-image-infos.png
+   :align: center
+   :alt: Diff Image Infos
+
+Unter der Reiterkarte ``Allgemein`` findest Du Informationen zu dem differentiellen Image wie z.B. den Zeitstempel oder den Imagenamen. Die Dateiendung ``.qdiff`` steht für ein differentielles Image.
+
+Hier kannst Du Änderungen bzw. Ergänzungen vornehmen und diese mithilfe des Buttons ``SPEICHERN`` dauerhaft anwenden.
 
 Boot-Bildschirme in LINBO
 -------------------------
@@ -366,4 +559,161 @@ Mit ``Enter`` wird der Client gebootet
 
 Mit der Auswahl durch die Pfeiltasten der Tastatur ``Ersteinrichtung + Neustart`` wird Linbo eingerichtet und der Rechner mit Linbo gestartet. Nach dem Neustart stehen alle Linbo-Funktionen zur Verfügung.
 
+Linbo4-Cache: Hinweise
+----------------------
+
+Linbo4 nutzt auf jedem Client eine lokale Cache-Partition, um ein oder mehrere Image/s eine Betriebssystems lokal vorzuhalten. Es lassen sich so unterschiedliche Verhaltensweisen eines Clients entweder via start.conf Datei oder via linbo-remote steuern.
+
+Cache-Verhalten
+^^^^^^^^^^^^^^^
+
+Ausgangszustände des Linbo-Caches können sein:
+
+1.  Cache ist leer.
+2.  Cache beinhaltet ein altes, aber gewünschtes Image.
+3.  Cache beinhaltet ein aktuelles Image.
+4.  Cache beinhaltet ein altes, aber nicht mehr gewünschtes Image.
+5.  Cache beinhaltet zwei alte, aber gewünschte Images.
+6.  Cache beinhaltet zwei aktuelle Images.
+7.  Cache beinhaltet zwei alte, aber nicht mehr gewünschte Images.
+
+Weitere Fälle sind denkbar. 
+
+- Welches Verhalten stellt sich dar? 
+- Welche Wirkung hat in Linbo der Befehl initcache - also eine vorherige Bereinigung / neue Befüllung des Linbo-Caches?
+
+1. Fall 1, das Image wird geladen ohne „initcache“.
+2. Fall 2, das neue Image wird geladen ohne „initcache“, das alte wird gelöscht.
+3. Fall 3, nichts passiert, ob mit oder ohne „initcache“.
+4. Fall 4, ohne „initcache“ läuft man Gefahr, dass der Cache voll läuft, mit „initcache“ wird das überflüssige Image gelöscht.
+5. Fall 5, die Images werden geladen (ohne „initcache“), die alten Images werden gelöscht.
+6. Fall 6, nichts passiert, ob mit oder ohne „initcache“.
+7. Fall 7, ohne „initcache“ läuft man Gefahr, dass der Cache voll läuft; mit „initcache“ werden die Images gelöscht und die neuen Images geladen.
+
+
+Grundsätzlich gilt:
+
+- ``initcache`` ist dann hilfreich, wenn
+
+  ..  ein neues Image nur in den Cache heruntergeladen werden soll,
+  ..  der Client mehrere Images für mehrere BS vorhält und neue Versionen in einem Schwung in den lokalen Cache heruntergeladen werden sollen,
+  ..  es für den Client ein Image mit neuem Namen gibt und sichergestellt werden soll, dass vor dem Herunterladen das Image mit dem alten Namen gelöscht wird, um Platzproblemen im Cache vorzubeugen.
+
+- ``initcache`` ist überflüssig, wenn nur ein Betriebssystem mit einem neuen Image gesynct werden soll und es keinen Grund gibt den Cache aufzuräumen. Das Image wird auch mit sync heruntergeladen.
+
+- ``initcache`` ist kontraproduktiv, wenn der Client mehrere Images vorhält und beim Sync dann u.U. länger als nötig unbenutzbar ist, weil zuerst alle neuen Images (nicht nur das zu syncende) heruntergeladen werden.
+
+Initcache anwenden
+^^^^^^^^^^^^^^^^^^
+
+**Option 1**
+
+In der Hardwareklasse (HWK) besteht für Linbo in der start.conf die Möglichkeit die Option
+
+.. code::
+
+   [LINBO]                       # globale Konfiguration
+   Cache = /dev/sda6             # lokale Cache Partition
+   Server = 10.0.0.1             # IP des Linbo-Servers, der das Linbo-Repository vorhaelt
+   Group = r101                  # Name der Rechnergruppe fuer die diese Konfigurationsdatei gilt
+   SystemType = efi64            # moeglich ist bios|bios64|efi32|efi64 (Standard: bios fuer bios 32bit)
+   RootTimeout = 600             # automatischer Rootlogout nach 600 Sek.
+   AutoPartition = no            # automatische Partitionsreparatur beim LINBO-Start
+   AutoFormat = no               # kein automatisches Formatieren aller Partitionen beim LINBO-Start
+   AutoInitCache = no            # kein automatisches Befuellen des Caches beim LINBO-Start
+   DownloadType = torrent        # Image-Download per torrent|multicast|rsync, default ist rsync
+   KernelOptions = quiet splash  # 
+
+Wird der Parameter ``AutoInitCache=yes`` gesetzt, so wird der lokale Cache jedesmal vollständig neu befüllt. Das ist entsprechend der oben beschriebenen Fälle allerdings nicht immer sinnvoll.
+
+**Option 2**
+
+Vom linuxmuster.net Server aus wird mit ``linbo-remote`` das Verhalten für initcache bei Bedarf gezielt gesteuert. In der start.conf der Linbo-HWK ist die Option ``AutoInitCache=no`` gesetzt.
+
+Mit folgendem Befehl, der auf dem Server abgesetzt wird, lässt sich der Cache beim nächsten Boot-Vorgang des betreffenden PCs neu befüllen:
+
+.. code::
+
+   linbo-remote -i r100-pc01 -w 45 -p initcache,sync:1,sync:2,sync:3,start:2
+   
+Es werden WOL-Pakete an den PC r100-pc01 gesendet, um diesen "aufzuwecken". Nach einer Wartezeit von 45 Sekunden werden die angegebenen Befehle an den Client weitergegeben. Es
+wird der Cache neu befüllt, das 1., 2. und 3. Betriebssystem synchronisiert und das 2. Betriebssystem gestartet.
+   
+Dies kann ebenfalls für eine ganze Rechnergruppe angewendet werden:
+
+.. code::
+
+   linbo-remote -g r101 -w 60 -p initcache,sync:1;sync:2,sync:3,start:2
+   
+Es werden ein WOL-Pakete an alle PCs der Geruppe r101 gesendet, um diese "aufzuwecken". Nach einer Wartezeit von 60 Sekunden werden die angegebenen Befehle an dien Clients weitergegeben. Es
+wird der Cache neu befüllt, das 1., 2. und 3. Betriebssystem synchronisiert und das 2. Betriebssystem gestartet.
+
+Zudem kann mit ``linbo-remote`` auch gezielt eine Partition formatiert werden und danach die Synchronisation sowie der Start eines gewünschten Betriebssystems erfolgen:
+
+.. code::
+
+  linbo-remote -i win10-client1 -p format:3,sync:1,start:1
+
+Dabei ist zu beachten:
+
+* ``format:<#>``: 
+  Schreibt die Partitionstabelle und formatiert nur die Partition mit der angegebenen Nummer aus der Partitionstabelle. Achtung: Bei UEFI-System ist EFI immer die erste Partition
+* ``sync:<#>``: 
+  Synchronisiert das Betriebsysystem, das in der start.conf an der angegebenen <#> Position eingetragen wurde.
+* ``start:<#>``:
+  Startet das Betriebsyssystem, das in der start.conf an der angegebenen <#> Position eingetragen wurde.
+
+Linbo4: Hook-Skripte
+--------------------
+
+.. attention::
+
+   Ab der Version Linbo 4.1.31 ``linuxmuster-linbo7 4.1.31`` stehen sogenannte Hook-Skripte zur Verfügung, um vor oder nach ``update-linbofs`` auf dem Server kleine Programme auszuführen, die durch definierte Ereignisse ausgelöst werden.
+
+Pre-Hook-Skripte
+^^^^^^^^^^^^^^^^
+
+Mit dem Befehl ``update-linbofs`` wird die Erstellung von linbofs auf dem Server angestossen.
+
+Pre-Hook-Skripte, werden hierbei vor der Erstellung von ``linbofs64.lz`` ausgeführt. Dies bietet die Möglichkeit, im Dateisystem vorher eigene Anpassungen vornehmen.
+
+Es könnten z.B. angepasste Dateien für ``.ssh/authorized_keys`` oder ``.env`` bereitgestellt werden.
+
+Diese Skripte sind in folgendem Verzeichnis abzulegen:
+
+.. code::
+
+   /var/lib/linuxmuster/hooks/update-linbofs.pre.d/
+
+Ein Hook-Skript muss ausführbar sein und mit einem ``shebang`` beginnen.
+
+.. code::
+
+   #!/bin/sh
+   #
+   # waiting for usb2lan adapter to come up
+   # /var/lib/linuxmuster/hooks/update-linbofs.pre.d/pre-hook1.sh
+
+   [...]
+
+   exit 0
+
+Das Skript muss in dem o.g. Verzeichnis als ausführbar definiert werden:
+
+.. code::
+
+   chmod +x /var/lib/linuxmuster/hooks/update-linbofs.pre.d/pre-hook1.sh
+
+Post-Hook-Skripte
+^^^^^^^^^^^^^^^^^
+
+Post-Hook-Skripte werden nach der Erstellung von ``update-linbofs`` auf dem Server ausgeführt. Es können so nachdem der Befehl ``update-linbofs`` durchgelaufen ist, z.B. Programme auf dem Server gestartet werden.
+
+Diese Skripte sind in folgendem Verzeichnis abzulegen:
+
+.. code::
+
+   /var/lib/linuxmuster/hooks/update-linbofs.post.d/
+
+Hook-Skripte müssen ausführbar sein und mit einem ``shebang`` beginnen. Es sind die zuvor genannten Hinweise zu beachten.
 
